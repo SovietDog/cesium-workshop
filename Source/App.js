@@ -46,7 +46,7 @@
     // Loading Imagery
     //////////////////////////////////////////////////////////////////////////
 
-    Cesium.BingMapsApi.defaultKey = 'AsarFiDvISunWhi137V7l5Bu80baB73npU98oTyjqKOb7NbrkiuBPZfDxgXTrGtQ'; // For use on cesiumjs.org only
+    Cesium.BingMapsApi.defaultKey = 'AihaXS6TtE_olKOVdtkMenAMq1L5nDlnU69mRtNisz1vZavr1HhdqGRNkB2Bcqvs'; // For use on cesiumjs.org only
 
     // Add Bing imagery
     viewer.imageryLayers.addImageryProvider(new Cesium.BingMapsImageryProvider({
@@ -178,6 +178,12 @@
         };
         // Add computed orientation based on sampled positions
         drone.orientation = new Cesium.VelocityOrientationProperty(drone.position);
+
+        // Smooth path interpolation
+        drone.position.setInterpolationOptions({
+            interpolationDegree : 3,
+            interpolationAlgorithm : Cesium.HermitePolynomialApproximation
+        });
     });
 
     //////////////////////////////////////////////////////////////////////////
@@ -255,8 +261,9 @@
 
     // If the mouse is over a point of interest, change the entity billboard scale and color
     var previousPickedEntity = undefined;
+
     var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
-    handler.setInputAction(function(movement) {
+    handler.setInputAction(function (movement) {
         var pickedPrimitive = viewer.scene.pick(movement.endPosition);
         var pickedEntity = (Cesium.defined(pickedPrimitive)) ? pickedPrimitive.id : undefined;
         // Unhighlight the previously picked entity
